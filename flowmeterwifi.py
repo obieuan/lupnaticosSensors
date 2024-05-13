@@ -3,7 +3,7 @@ import utime
 import network
 import handleJson
 import gc  # Garbage collector
-from secrets import ssid, password
+from secrets import ssid, password, APIURL
 
 sensor_pin = machine.Pin(28, machine.Pin.IN, machine.Pin.PULL_DOWN)
 contador_pulsos = 0
@@ -49,7 +49,7 @@ def calcular_flujo():
         if utime.ticks_diff(tiempo_actual, ultimo_envio_tiempo) >= tiempo_espera:
             gc.collect()  # Collect garbage before sending data
             print(f"Memoria libre antes del envío: {gc.mem_free()}")
-            response = handleJson.post_json("http://192.168.100.248/lupnaticos/insertflow.php", data)
+            response = handleJson.post_json(APIURL, data)
             print(f"Memoria libre después del envío: {gc.mem_free()}")
             if response is not None and response.status_code == 200:
                 print("Datos insertados correctamente")
